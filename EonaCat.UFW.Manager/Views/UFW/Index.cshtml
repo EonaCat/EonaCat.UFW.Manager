@@ -1,0 +1,133 @@
+﻿@model EonaCat.UFW.Manager.Models.RuleViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@if (ViewBag.UFWUser is EonaCat.UFW.Manager.Helpers.UFWUser user)
+{
+    <h1>Welcome @user.Username</h1>
+    if (user.IsRoot)
+    {
+        <br />
+        <label>You are root</label>
+    }
+
+    if (user.HasSudo)
+    {
+        <br />
+        <label>You got sudo rights</label>
+    }
+
+    <br />
+    if (!user.HasPassword)
+    {
+        <label>You need to authenticate yourself before you can manage UFW!</label>
+
+        <br />
+        <form method="post">
+            <input type="password" id="password" name="password"></input>&nbsp;<button type="submit" class="btn btn-primary">OK</button>
+        </form>
+        return;
+    }
+    else if (Model.IsActive)
+    {
+        <p>
+            <a asp-action="Create">Create new rule</a>
+        </p>
+    }
+
+    string status;
+    @if (Model.IsActive)
+    {
+        status = "Active";
+    }
+    else
+    {
+        status = "Disabled";
+    }
+
+    @using (Html.BeginForm("SwitchUFW", "UFW", FormMethod.Post, new { @style = "display:inline;" }))
+    {
+        <label>UFW status: </label>
+        <input type="hidden" value="@status" name="status" />
+        <button type="submit" class="btn btn-default">@status</button>
+    }
+}
+
+@if (!Model.IsActive)
+{
+    return;
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Rules[0].RuleIndex)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rules[0].Type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rules[0].Protocol)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rules[0].Port)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rules[0].From)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rules[0].SourceType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rules[0].Source)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Rules != null)
+        {
+            @foreach (var item in Model.Rules)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RuleIndex)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Type)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Protocol)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Port)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.From)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SourceType)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Source)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.RuleIndex">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.RuleIndex">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.RuleIndex">Delete</a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td>
+                    <label>No rules found</label>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

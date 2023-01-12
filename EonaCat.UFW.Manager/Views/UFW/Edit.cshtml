@@ -1,0 +1,69 @@
+﻿@using EonaCat.Linux.UFW.Models;
+@model EonaCat.UFW.Manager.Models.Rule
+
+@{
+  ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Rule</h4>
+<hr />
+<div class="row">
+  <div class="col-md-4">
+    <form asp-action="Edit">
+      <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+      <input type="hidden" asp-for="RuleIndex" />
+            <div class="form-group">
+                <label asp-for="Type" class="control-label" style="font-weight:bold"></label>
+                <select asp-for="Type"
+                        class="form-control"
+                        asp-items="Html.GetEnumSelectList<RuleType>()">
+                </select>
+                <span asp-validation-for="Type" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Protocol" class="control-label" style="font-weight:bold"></label>
+                <select asp-for="Protocol"
+                        class="form-control"
+                        asp-items="Html.GetEnumSelectList<RuleProtocol>()">
+                </select>
+                <span asp-validation-for="Protocol" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Port" class="control-label" style="font-weight:bold"></label>
+                <input asp-for="Port" class="form-control" />
+                <span asp-validation-for="Port" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="From" class="control-label" style="font-weight:bold"></label>
+                <input asp-for="From" class="form-control" />
+                <span asp-validation-for="From" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SourceType" class="control-label" style="font-weight:bold"></label>
+                <select asp-for="SourceType"
+                        class="form-control"
+                        asp-items="Html.GetEnumSelectList<SourceType>()">
+                </select>
+                <span asp-validation-for="SourceType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Source" class="control-label" style="font-weight:bold"></label>
+                <input asp-for="Source" class="form-control" />
+                <span asp-validation-for="Source" class="text-danger"></span>
+            </div>
+      <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" />
+      </div>
+    </form>
+  </div>
+</div>
+
+<div>
+  <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+  @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
